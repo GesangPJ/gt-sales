@@ -1,5 +1,10 @@
-import { ComponentExample } from "@/components/component-example";
+import { ComponentExample } from "@/components/component-example"
+import LoginForm from "@/components/login-form";
 
 export default function Page() {
-return <ComponentExample />;
+return (
+    <div>
+        <LoginForm/>
+    </div>
+)
 }
