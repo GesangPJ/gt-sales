@@ -30,6 +30,7 @@ export default function LoginForm() {
       const {error} = await authClient.signIn.email({
                       email: data.email,
                       password: data.password,
+                      callbackURL:"/kasir"
                     })
   
         if (error) {
