@@ -44,7 +44,7 @@ export function TombolNav(){
               "
               >
               <CircleUserRound className="h8 w-8"/>
-                <span>Profile Admin</span>
+                <span>Profile</span>
               </Link>
               
             </SidebarMenuItem>
