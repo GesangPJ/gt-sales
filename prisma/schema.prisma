@@ -122,8 +122,9 @@ enum StatusTransaksi {
 }
 
 enum JenisProduk {
-  BARANG
-  PANGAN
+  SEMBAKO
+  ELEKTRONIK
+  LAINNYA
 }
 
 model Kategori {
