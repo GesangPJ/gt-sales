@@ -185,10 +185,10 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       <SidebarHeader>
         <SidebarMenuItem>
             <SidebarMenuButton
-            render={<Link href="/kasir" className="hover:bg-none"/>}
+            render={<Link href="#" />}
             >
                 <IconAppsFilled/>
-                <span className="text-yellow-500 font-semibold">GT-SALES</span> 
+                <span className="text-yellow-500  text-xl font-semibold">GT-SALES</span> 
                 <AppInfo/>
             </SidebarMenuButton>
         </SidebarMenuItem>

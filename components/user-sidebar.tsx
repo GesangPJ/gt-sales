@@ -38,6 +38,7 @@ import { IconLayoutRows,
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { AppInfo } from "./app-info"
+import { TombolNav } from "./sidebar-tombol"
 
 // This is sample data.
 const data = {
@@ -86,39 +87,10 @@ const data = {
           title: "Status Pembelian",
           url: "/pembelian/status-pembelian",
         },
-        {
-          title: "Edit Pembelian",
-          url: "/pembelian/edit-pembelian",
-        },
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: (
-        <IconFrame
-        />
-      ),
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: (
-        <IconChartPie
-        />
-      ),
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: (
-        <IconMap
-        />
-      ),
-    },
-  ],
+  
 }
 
 interface UserSidebarProps {
@@ -147,11 +119,18 @@ export function UserSidebar({ user }: UserSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navKasir}/>
+        <SidebarMenuItem className="px-2">
+          <SidebarMenuButton render={<Link href="/kasir">
+          <IconCashRegister className="w-10 h10"/>
+          <span className="">Kasir</span>
+          </Link>}>
+
+          </SidebarMenuButton>
+        </SidebarMenuItem>
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <TombolNav/>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
