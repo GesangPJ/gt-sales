@@ -1,0 +1,289 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Produk {
+  id            String   @id  @default(uuid())
+  nama_produk   String
+  barcode       String?
+  harga_jual    Int
+  harga_beli    Int
+  stok          Int
+  keterangan    String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime  @updatedAt
+
+
+  distributorId String?
+  brandId       String?
+  kategoriId    String
+
+  pembeliandetail PembelianDetail[]
+  distributor   Distributor?   @relation(fields: [distributorId], references: [id], onDelete: SetNull)
+  kategori      Kategori       @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
+  brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
+
+  @@index([nama_produk, barcode])
+  @@map("produk")
+
+}
+
+enum MetodeBayar {
+  CASH
+  TRANSFER
+  QRIS
+}
+
+model Penjualan {
+  id            String    @id @default(uuid())
+  kode_penjualan String   @unique
+  metode_bayar    MetodeBayar  @default(CASH)
+  jumlahtotal     Int
+  status_penjualan StatusTransaksi  @default(SELESAI)
+  nilai_diskon    Int?
+  persen_diskon   Decimal?
+  keterangan      String?
+
+  userId          String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  penjualandetail PenjualanDetail[]
+  user            User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([kode_penjualan])
+  @@map("penjualan")
+}
+
+model PenjualanDetail {
+  id            String    @id  @default(uuid())
+  penjualanId   String
+  produkId      String
+  jumlah        Int
+  harga         Int
+  total         Int
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  penjualan     Penjualan @relation(fields: [penjualanId], references: [id], onDelete: Restrict)
+}
+
+model Pembelian {
+  id             String     @id @default(uuid())
+  kode_pembelian String     @unique
+  metode_bayar   MetodeBayar  @default(TRANSFER)
+  jumlahtotal    Int
+  status_pembelian StatusTransaksi  @default(DIPESAN)
+  biaya_kirim    Int?
+  
+  userId         String
+  distributorId  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  distributor    Distributor?  @relation(fields: [distributorId], references: [id], onDelete: SetNull)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  pembeliandetail PembelianDetail[]
+
+  @@index([kode_pembelian])
+  @@map("pembelian")
+
+}
+
+model PembelianDetail {
+  id             String     @id @default(uuid())
+  pembelianId    String
+  produkId       String
+  jumlah         Int
+  harga          Int
+  total          Int
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  produk         Produk     @relation(fields: [produkId], references: [id], onDelete: Restrict)
+  pembelian      Pembelian  @relation(fields: [pembelianId], references: [id], onDelete: Restrict)
+}
+
+enum StatusTransaksi {
+  SELESAI
+  BATAL
+  DIPESAN
+}
+
+enum JenisProduk {
+  BARANG
+  PANGAN
+}
+
+model Kategori {
+  id            String    @id   @default(uuid())
+  nama_kategori String    @unique
+  jenis         JenisProduk
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  produk        Produk[]
+
+  @@index([nama_kategori])
+  @@map("kategori")
+}
+
+model Brand {
+  id            String    @id   @default(uuid())
+  nama_brand    String    @unique
+  isActive      Boolean   @default(true)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  produk        Produk[]
+
+  @@index([nama_brand])
+  @@map("brand")
+}
+
+model Distributor {
+  id            String    @id   @default(uuid())
+  nama_distributor String
+  email_distributor String?
+  alamat_distributor String?
+  notelp_distributor String?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  produk        Produk[]
+  pembelian     Pembelian[]
+
+  @@index([nama_distributor])
+  @@map("distributor")
+}
+
+enum AkunJurnal {
+  PENJUALAN
+  PEMBELIAN
+  RETURN_PENJUALAN
+  RETURN_PEMBELIAN
+  HPP
+  KAS
+  BANK
+  PIUTANG
+}
+
+model Jurnal  {
+  id          Int     @id   @default(autoincrement())
+  kode        String
+  akun        AkunJurnal
+  debit       Decimal  
+  kredit      Decimal
+  keterangan   String?
+  sumber      String?
+  userId      String
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([kode])
+  @@index([userId])
+  @@map("jurnal")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          String?
+  tipe          String       @default("user")  // owner, admin, user
+  banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  notelp        String?
+  alamat        String?
+  sessions      Session[]
+  accounts      Account[]
+
+  pembelian     Pembelian[]
+  penjualan     Penjualan[]
+  jurnal        Jurnal[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id             String   @id
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Jwks {
+  id         String    @id
+  publicKey  String
+  privateKey String
+  createdAt  DateTime
+  expiresAt  DateTime?
+
+  @@map("jwks")
+}
