@@ -34,10 +34,12 @@ import { IconLayoutRows,
     IconReceipt2,
     IconCategory,
     IconBook2,
+    IconBuildingCommunity,
     IconMap 
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { AppInfo } from "./app-info"
+import { TombolNav } from "./sidebar-tombol"
 
 // This is sample data.
 const data = {
@@ -50,8 +52,32 @@ const data = {
     {
         title: "Kasir",
         url:"/kasir",
-        icon: <IconCashRegister/>
+        icon: (<IconCashRegister/>),
     },
+  ],
+  navBrand:[
+    {
+      title:"Brand",
+      url:"#",
+      icon:(<IconBuildingCommunity/>),
+      items:[
+        {
+          title:"Daftar Brand",
+          url:"/brand"
+        },
+        {
+          title:"Tambah Brand",
+          url:"/brand/tambah-brand",
+        },
+        {
+          title:"Edit Brand",
+          url:"/brand/edit-brand",
+        },
+
+        ],
+      
+    },
+
   ],
   navMain: [
     {
@@ -143,32 +169,6 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: (
-        <IconFrame
-        />
-      ),
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: (
-        <IconChartPie
-        />
-      ),
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: (
-        <IconMap
-        />
-      ),
-    },
-  ],
 }
 
 interface AdminSidebarProps {
@@ -179,13 +179,13 @@ interface AdminSidebarProps {
   }
 }
 
-export function AppSidebar({ user }: AdminSidebarProps) {
+export function AdminSidebar({ user }: AdminSidebarProps) {
   return (
     <Sidebar collapsible="offcanvas">
       <SidebarHeader>
         <SidebarMenuItem>
             <SidebarMenuButton
-            render={<Link href="/" className="hover:bg-none"/>}
+            render={<Link href="/kasir" className="hover:bg-none"/>}
             >
                 <IconAppsFilled/>
                 <span className="text-yellow-500 font-semibold">GT-SALES</span> 
@@ -197,11 +197,13 @@ export function AppSidebar({ user }: AdminSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <NavMain items={data.navKasir}/>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={data.navBrand}/>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        {/* <NavUser user={user} /> */}
+        <TombolNav/>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
