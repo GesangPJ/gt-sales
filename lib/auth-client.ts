@@ -1,8 +1,9 @@
 import { createAuthClient } from "better-auth/react"
 import { inferAdditionalFields, adminClient } from "better-auth/client/plugins"
+import { switchAPI } from "./select-API"
 
 export const authClient =  createAuthClient({
-    basePath: "/api/v1/auth",
+    basePath: `${switchAPI}/auth`,
     fetchOptions: {
         credentials: "include",
     },

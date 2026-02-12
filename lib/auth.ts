@@ -3,13 +3,14 @@ import { prismaAdapter } from "better-auth/adapters/prisma"
 import prisma from "@/lib/prisma"
 import { jwt, admin } from "better-auth/plugins"
 import { nextCookies } from "better-auth/next-js"
+import { switchAPI } from "./select-API"
 
 export const auth = betterAuth({
   
   database: prismaAdapter(prisma, {
         provider: "sqlite",
     }),
- basePath: "/api/v1/auth",
+ basePath: `${switchAPI}/auth`,
  emailAndPassword: { 
         enabled: true,
         autoSignIn: false,  
