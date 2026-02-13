@@ -1,6 +1,9 @@
 
 // Halaman brand
 import FormBrand from "./form-brand"
+import TabelBrand from "./tabel-brand"
+import { Suspense } from "react"
+import { ShimmerTable } from "@/components/mvpblocks/skeleton-table-1"
 
 export default function HalamanBrand(){
 
@@ -10,6 +13,9 @@ export default function HalamanBrand(){
 
                 {/* Tabel daftar brand */}
                 <div>
+                    <Suspense fallback={<ShimmerTable rowCount={10} columnCount={2}  />}>
+                        <TabelBrand/>
+                    </Suspense>
 
                 </div>
 
