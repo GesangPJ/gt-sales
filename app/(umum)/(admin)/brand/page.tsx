@@ -1,29 +1,31 @@
 
-// Halaman Kategori
-import TabelKategori from "./tabel-kategori"
+// Halaman brand
+import FormBrand from "./form-brand"
+import TabelBrand from "./tabel-brand"
 import { Suspense } from "react"
 import { ShimmerTable } from "@/components/mvpblocks/skeleton-table-1"
-import FormKategori from "./form-kategori"
 
-export default function HalamanKategori(){
+export default function HalamanBrand(){
 
     return(
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
 
-                {/* Tabel Daftar Kategori */}
-                <div className="mt-3">
+                {/* Tabel daftar brand */}
+                <div>
                     <Suspense fallback={<ShimmerTable rowCount={10} columnCount={2}  />}>
-                        <TabelKategori/>
+                        <TabelBrand/>
                     </Suspense>
+
                 </div>
-                
-                {/* Form Tambah Kategori */}
-                <div className="mt-3">
-                    <FormKategori/>
+
+                {/* Form Tambah Brand */}
+                <div>
+                    <FormBrand/>
                 </div>
 
             </div>
+
         </div>
     )
 }

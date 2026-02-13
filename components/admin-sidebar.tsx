@@ -35,6 +35,7 @@ import { IconLayoutRows,
     IconCategory,
     IconBook2,
     IconBuildingCommunity,
+    IconBuildingWarehouse,
     IconMap 
 } from "@tabler/icons-react"
 import Link from "next/link"
@@ -77,6 +78,25 @@ const data = {
         ],
       
     },
+    {
+      title:"Distributor",
+      url:"#",
+      icon:(<IconBuildingWarehouse/>),
+      items:[
+        {
+          title:"Daftar Distributor",
+          url:"/distributor",
+        },
+        {
+          title:"Tambah Distributor",
+          url:"/distributor/tambah-distributor",
+        },
+        {
+          title:"Edit Distributor",
+          url:"/distributor/edit-distributor",
+        },
+      ]
+    }
 
   ],
   navMain: [
@@ -110,11 +130,11 @@ const data = {
       items: [
         {
           title: "Daftar Kategori",
-          url: "#",
+          url: "/kategori",
         },
         {
           title: "Edit Kategori",
-          url: "#",
+          url: "/kategori/edit-kategori",
         },
       ],
     },
@@ -197,7 +217,14 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navKasir}/>
+        <SidebarMenuItem className="px-2">
+          <SidebarMenuButton render={<Link href="/kasir">
+          <IconCashRegister className="w-10 h10"/>
+          <span className="">Kasir</span>
+          </Link>}>
+
+          </SidebarMenuButton>
+        </SidebarMenuItem>
         <NavMain items={data.navMain} />
         <NavMain items={data.navBrand}/>
       </SidebarContent>

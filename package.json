@@ -9,6 +9,8 @@
     "seed-admin": "bun run script/seed-admin.ts",
     "seed-user": "bun run script/seed-user.ts",
     "set-admin": "bun run script/set-admin.ts",
+    "seed-kategori": "bun run script/seed-kategori.ts",
+    "seed-brand": "bun run script/seed-brand.ts",
     "lint": "eslint"
   },
   "dependencies": {
@@ -17,11 +19,13 @@
     "@prisma/adapter-libsql": "^7.4.0",
     "@prisma/client": "^7.4.0",
     "@tabler/icons-react": "^3.36.1",
+    "@tanstack/react-table": "^8.21.3",
     "@types/better-sqlite3": "^7.6.13",
     "better-auth": "^1.4.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.4",
+    "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
     "next-themes": "^0.4.6",
