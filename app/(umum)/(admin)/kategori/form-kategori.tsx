@@ -1,6 +1,6 @@
 
 // Komponen Form Kategori
-
+'use client'
 import { useState } from "react"
 import {
   Select,
@@ -70,7 +70,7 @@ export default function FormKategori(){
             if(!respon.ok){
                 toast.error("Terjadi kesalahan saat akan menambahkan kategori")
             }
-            toast.success("Berhasil menambahkan brand")
+            toast.success("Berhasil menambahkan kategori")
             form.reset()
             setJenisKategori("")
 
@@ -94,8 +94,9 @@ export default function FormKategori(){
                         <FieldLabel>Nama Kategori</FieldLabel>
                         <Input
                             {...form.register("nama")}
+                            className="max-w-150"
                             id="nama"
-                            name="nama_kategori"
+                            name="nama"
                             type="text"
                             required
                             />
