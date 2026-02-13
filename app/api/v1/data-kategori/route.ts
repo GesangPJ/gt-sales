@@ -15,7 +15,7 @@ export async function GET(){
             select:{
                 id:true,
                 nama_kategori:true,
-                jenis:true,
+                jenis_kategori:true,
             }
         })
 
@@ -47,10 +47,10 @@ export async function POST(req:NextRequest){
 
         const {
             nama,
-            jeniskategori
+            jenis,
         } = body
 
-        if(!nama || !jeniskategori){
+        if(!nama){
             return NextResponse.json({
                 message:"Data tidak boleh kosong!"
             }, {status:400})
@@ -59,10 +59,14 @@ export async function POST(req:NextRequest){
         const tambah_kategori = await prisma.kategori.create({
             data:{
                 nama_kategori:nama,
-                jenis:jeniskategori,
+                jenis_kategori:jenis,
                 isActive:true,
             },
         })
+
+        if(!tambah_kategori){
+            console.error("Error menambahkan kategori", tambah_kategori)
+        }
 
         console.log(`Kategori baru ditambahkan`, tambah_kategori)
         revalidateTag('kategori','max')
@@ -101,7 +105,7 @@ export async function PUT(req:NextRequest){
             where:{id:idkategori,},
             data:{
                 nama_kategori:nama,
-                jenis:jeniskategori,
+                jenis_kategori:jeniskategori,
             }
         })
 
