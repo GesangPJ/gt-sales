@@ -67,10 +67,6 @@ const data = {
           url:"/brand"
         },
         {
-          title:"Tambah Brand",
-          url:"/brand/tambah-brand",
-        },
-        {
           title:"Edit Brand",
           url:"/brand/edit-brand",
         },
@@ -86,10 +82,6 @@ const data = {
         {
           title:"Daftar Distributor",
           url:"/distributor",
-        },
-        {
-          title:"Tambah Distributor",
-          url:"/distributor/tambah-distributor",
         },
         {
           title:"Edit Distributor",

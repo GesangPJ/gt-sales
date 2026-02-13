@@ -24,6 +24,14 @@ export const registrasiSchema = z.object({
     alamat: z.string().trim().max(250).optional().or(z.literal("")),
 })
 
+export const distributorSchema = z.object({
+  namadist: z.string().trim().min(1,"Nama distributor wajib diisi"),
+  emaildist: z.email("Format email tidak valid").trim().optional(),
+  alamatdist: z.string().trim().max(250).optional().or(z.literal("")),
+  notelpdist: z.string().trim().optional(),
+})
+
+export type DistributorSchema = z.infer<typeof distributorSchema>
 export type BrandSchema = z.infer<typeof brandSchema>
 export type KategoriSchema = z.infer<typeof kategoriSchema>
 export type LoginSchema = z.infer<typeof loginSchema>
