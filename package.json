@@ -11,6 +11,7 @@
     "set-admin": "bun run script/set-admin.ts",
     "seed-kategori": "bun run script/seed-kategori.ts",
     "seed-brand": "bun run script/seed-brand.ts",
+    "seed-distributor":"bun run script/seed-distributor.ts",
     "lint": "eslint"
   },
   "dependencies": {
