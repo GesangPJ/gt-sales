@@ -66,6 +66,8 @@ export async function POST(req: NextRequest){
             barcodeproduk,
             idkategori,
             hargabeli,
+            iddistributor,
+            idbrand,
             hargajual,
             stokproduk,
             keterangan,
@@ -86,10 +88,21 @@ export async function POST(req: NextRequest){
                 stok:parseInt(stokproduk),
                 kategoriId:idkategori,
                 userId:idadmin,
+                distributorId:iddistributor,
+                brandId:idbrand,
                 keterangan,
                 isActive:true,
             },
         })
+
+
+        if(!tambah_produk){
+            console.log("Gagal menambahkan produk", tambah_produk)
+            return NextResponse.json({
+                message:"Gagal menambahkan produk",
+                data:tambah_produk
+            }, {status:500})
+        }
 
         revalidateTag("produk","max")
         console.log("Berhasil menambahkan produk", tambah_produk)
@@ -97,10 +110,11 @@ export async function POST(req: NextRequest){
             message:"Berhasil menambahkan produk"
         }, {status:201})
 
-    }catch(error){
+    }catch(error:any){
+        console.error("Error tidak bisa menambahkan produk", error)
 
         return NextResponse.json({
-            message:"Server Error"
+            message:`Server Error ${error}`
         }, {status:500})
     }
 }
