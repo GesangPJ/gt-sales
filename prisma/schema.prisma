@@ -130,7 +130,7 @@ enum JenisProduk {
 model Kategori {
   id            String    @id   @default(uuid())
   nama_kategori String    @unique
-  jenis         JenisProduk
+  jenis_kategori         JenisProduk
   isActive      Boolean  @default(true)
 
   createdAt     DateTime  @default(now())
