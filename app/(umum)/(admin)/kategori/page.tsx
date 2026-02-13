@@ -1,6 +1,9 @@
 
 // Halaman Kategori
-import { Separator } from "@/components/ui/separator"
+import TabelKategori from "./tabel-kategori"
+import { Suspense } from "react"
+import { ShimmerTable } from "@/components/mvpblocks/skeleton-table-1"
+import FormKategori from "./form-kategori"
 
 export default function HalamanKategori(){
 
@@ -10,12 +13,14 @@ export default function HalamanKategori(){
 
                 {/* Tabel Daftar Kategori */}
                 <div className="mt-3">
-
+                    <Suspense fallback={<ShimmerTable rowCount={10} columnCount={2}  />}>
+                        <TabelKategori/>
+                    </Suspense>
                 </div>
-                <Separator className="mt-5"/>
+                
                 {/* Form Tambah Kategori */}
-                <div className="mt-5">
-
+                <div className="mt-3">
+                    <FormKategori/>
                 </div>
 
             </div>
