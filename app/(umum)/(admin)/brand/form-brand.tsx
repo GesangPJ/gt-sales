@@ -1,16 +1,7 @@
 
 // Komponen form brand
+'use client'
 
-import { useState } from "react"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import{
     Card,
@@ -86,6 +77,7 @@ export default function FormBrand(){
                     <Field>
                         <FieldLabel>Nama Brand</FieldLabel>
                         <Input
+                        className="max-w-150"
                             {...form.register("nama")}
                             id="nama"
                             name="nama"
