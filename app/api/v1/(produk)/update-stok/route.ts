@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 import { revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
-import { success } from "zod"
 
 
 export async function PUT(req: NextRequest){
@@ -38,6 +37,7 @@ export async function PUT(req: NextRequest){
             data:{stok:parseInt(stokproduk)}
         })
 
+        revalidateTag(`produk-${id}`,'max')
         revalidateTag('produk','max')
         console.log(`Stok Produk ${id} berhasil diupdate`)
         return NextResponse.json(
