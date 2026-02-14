@@ -23,6 +23,21 @@ export async function GET(req: NextRequest){
                     select:{
                         nama_kategori:true,
                     }
+                },
+                brand:{
+                    select:{
+                        nama_brand: true,
+                    }
+                },
+                distributor:{
+                    select:{
+                        nama_distributor:true,
+                    }
+                },
+                user:{
+                    select:{
+                        name:true,
+                    }
                 }
             }
         })
