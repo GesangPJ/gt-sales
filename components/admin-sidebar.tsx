@@ -108,6 +108,10 @@ const data = {
           url: "/tambah-produk",
         },
         {
+          title: "Update Stok",
+          url:"/produk/stok-produk"
+        },
+        {
           title: "Edit Produk",
           url: "/edit-produk",
         },
