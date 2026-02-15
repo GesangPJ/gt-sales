@@ -31,6 +31,24 @@ export const distributorSchema = z.object({
   notelpdist: z.string().trim().optional(),
 })
 
+export const tambahProduk = z.object({
+  namaproduk: z.string().trim().min(1, "Nama produk wajib diisi!"),
+  barcodeproduk: z.string().trim().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
+  hargajual: z.coerce.number().min(1, "Harga wajib diisi"),
+  hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
+  stokproduk: z.coerce.number().min(1,"Stok wajib diisi"),
+  
+})
+
+export const editProduk = z.object({
+  namaproduk: z.string().trim().min(1, "Nama produk wajib diisi!"),
+  barcodeproduk: z.string().trim().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
+  hargajual: z.coerce.number().min(1, "Harga wajib diisi"),
+  hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
+})
+
+export type EditProdukSchema = z.infer<typeof editProduk>
+export type ProdukSchema = z.infer<typeof tambahProduk>
 export type DistributorSchema = z.infer<typeof distributorSchema>
 export type BrandSchema = z.infer<typeof brandSchema>
 export type KategoriSchema = z.infer<typeof kategoriSchema>

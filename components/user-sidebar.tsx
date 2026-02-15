@@ -66,6 +66,10 @@ const data = {
           title: "Daftar Produk",
           url: "/produk",
         },
+        {
+          title: "Update Stok",
+          url:"/produk/stok-produk"
+        },
       ],
     },
     {

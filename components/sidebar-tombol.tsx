@@ -38,7 +38,7 @@ export function TombolNav(){
         <SidebarMenu>
        <SidebarMenuItem className="mb-5">
               <Link 
-              href="/akun/data-akun"
+              href="/profile"
               className="flex items-center justify-center gap-2
               w-full rounded-full py-2.5 font-medium border-3
               "
