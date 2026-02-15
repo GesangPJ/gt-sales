@@ -110,7 +110,15 @@ const data = {
         {
           title:"Manajemen Admin",
           url:"/akun/kelola-admin",
-        }
+        },
+        {
+          title:"Daftar Session",
+          url:"/akun/sesi",
+        },
+        {
+          title:"Manajemen Sesi",
+          url:"/akun/kelola-sesi",
+        },
       ]
     },
   ],
