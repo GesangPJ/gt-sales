@@ -62,7 +62,7 @@ export default function FormTambahProduk(){
 
     const {data: session, isPending} = authClient.useSession()
 
-    const form = useForm<ProdukSchema>({
+    const form = useForm({
         resolver: zodResolver(tambahProduk),
         mode:"onChange",
         defaultValues:{
