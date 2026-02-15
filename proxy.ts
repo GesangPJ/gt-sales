@@ -9,14 +9,20 @@ export async function proxy(request: NextRequest) {
     headers: await headers(),
   })
 
-  // PUBLIC ROUTES
+  // publik
   if (pathname === "/") {
     return NextResponse.next()
   }
 
-  // ADMIN / OWNER ONLY
+  // HANYA ADMIN
   if (
-    ["/akun", "/tambah-produk", "/kategori","/brand", "/jurnal", "/laporan"].some(p =>
+    ["/akun", 
+      "/tambah-produk",
+      "/edit-produk", 
+      "/kategori",
+      "/brand", 
+      "/jurnal", 
+      "/laporan"].some(p =>
       pathname.startsWith(p)
     )
   ) {
@@ -31,9 +37,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // LOGIN REQUIRED
+  // BUTUH LOGIN
   if (
-    ["/kasir", "/produk", "/pembelian"].some(p =>
+    ["/kasir", "/produk", "/pembelian","/profile"].some(p =>
       pathname.startsWith(p)
     )
   ) {
