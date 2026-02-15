@@ -35,6 +35,7 @@ import { IconLayoutRows,
     IconCategory,
     IconBook2,
     IconBuildingCommunity,
+    IconUsers,
     IconBuildingWarehouse,
     IconMap 
 } from "@tabler/icons-react"
@@ -88,8 +89,30 @@ const data = {
           url:"/distributor/edit-distributor",
         },
       ]
-    }
-
+    },
+    {
+      title:"Pengaturan Akun",
+      url:"#",
+      icon:(<IconUsers/>),
+      items:[
+        {
+          title:"Daftar Akun",
+          url:"/akun",
+        },
+        {
+          title:"Registrasi Akun",
+          url:"/akun/tambah-akun",
+        },
+        {
+          title:"Manajemen User",
+          url:"/akun/kelola-user",
+        },
+        {
+          title:"Manajemen Admin",
+          url:"/akun/kelola-admin",
+        }
+      ]
+    },
   ],
   navMain: [
     {
