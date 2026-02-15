@@ -33,20 +33,21 @@ export const distributorSchema = z.object({
 
 export const tambahProduk = z.object({
   namaproduk: z.string().trim().min(1, "Nama produk wajib diisi!"),
-  hargajual: z
-    .string()
-    .regex(/^[0-9]+$/, "Harga harus angka")
-    .min(3, "Harga minimal 3 digit"),
-  barcodeproduk: z
-  .string()
-  .trim()
-  .regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
-
-  hargabeli: z.string().regex(/^[0-9]+$/, "Harga harus angka").min(3, "Harga minimal 3 digit"),
-  stokproduk: z.string().regex(/^[0-9]+$/, "Stok harus angka").min(1, "Stok minimal 1 digit"),
+  barcodeproduk: z.string().trim().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
+  hargajual: z.coerce.number().min(1, "Harga wajib diisi"),
+  hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
+  stokproduk: z.coerce.number().min(1,"Stok wajib diisi"),
   
 })
 
+export const editProduk = z.object({
+  namaproduk: z.string().trim().min(1, "Nama produk wajib diisi!"),
+  barcodeproduk: z.string().trim().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
+  hargajual: z.coerce.number().min(1, "Harga wajib diisi"),
+  hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
+})
+
+export type EditProdukSchema = z.infer<typeof editProduk>
 export type ProdukSchema = z.infer<typeof tambahProduk>
 export type DistributorSchema = z.infer<typeof distributorSchema>
 export type BrandSchema = z.infer<typeof brandSchema>
