@@ -5,6 +5,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
+import { tambahProduk } from "@/lib/zod-schema";
 
 //Ambil produk untuk daftar produk
 
@@ -18,12 +19,18 @@ export async function GET(){
                 nama_produk:true,
                 harga_beli:true,
                 harga_jual:true,
+                barcode:true,
                 stok:true,
                 kategori:{
                     select:{
                         nama_kategori:true,
                     }
                 },
+                distributor:{
+                    select:{
+                        nama_distributor:true,
+                    }
+                }
 
             }
         })
@@ -37,6 +44,7 @@ export async function GET(){
         const hasil = data_produk.map((produk)=>({
             ...produk,
             namakategori: produk.kategori?.nama_kategori ?? "-",
+            namadistributor: produk.distributor?.nama_distributor ?? "-",
         }))
 
         return NextResponse.json({
@@ -109,6 +117,58 @@ export async function POST(req: NextRequest){
         return NextResponse.json({
             message:"Berhasil menambahkan produk"
         }, {status:201})
+
+    }catch(error:any){
+        console.error("Error tidak bisa menambahkan produk", error)
+
+        return NextResponse.json({
+            message:`Server Error ${error}`
+        }, {status:500})
+    }
+}
+
+export async function PUT(req: NextRequest){
+
+    try{
+        const body = await req.json()
+
+    const {
+        idproduk,
+        idadmin,
+        namaproduk,
+        barcodeproduk,
+        hargajual,
+        hargabeli,
+        iddistributor,
+        keterangan,
+
+    } = body
+
+    if(!idadmin || !namaproduk || !idproduk){
+        return NextResponse.json({
+            message:"Ada data yang kosong!"
+        }, {status:400})
+    }
+
+    const edit_produk = await prisma.produk.update({
+        where:{id:idproduk,},
+        data:{
+            nama_produk:namaproduk,
+            barcode:barcodeproduk,
+            harga_beli:hargabeli,
+            harga_jual:hargajual,
+            keterangan,
+            distributorId:iddistributor,
+        }
+    })
+
+    revalidateTag("produk","max")
+    revalidateTag(`produk-${idproduk}`,"max")
+    console.log(`Berhasil update produk`, edit_produk)
+
+    return NextResponse.json({
+        message:"Berhasil update produk"
+    }, {status:200})
 
     }catch(error:any){
         console.error("Error tidak bisa menambahkan produk", error)
