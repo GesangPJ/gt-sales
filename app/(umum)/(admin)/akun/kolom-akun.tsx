@@ -83,7 +83,7 @@ export const kolom_akun : ColumnDef<Akun>[] = [
     ),
     cell: ({ row }) => (
       <div className="capitalize pl-2">
-        {row.getValue("name")}
+        {row.getValue("alamat")}
       </div>
     ),
   },
