@@ -15,8 +15,7 @@ export async function GET(){
                 email:true,
                 alamat:true,
                 notelp:true,
-                createdAt:true,
-                updatedAt:true,
+                banned:true,
             }
         })
 
