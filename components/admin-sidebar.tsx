@@ -101,7 +101,7 @@ const data = {
         },
         {
           title:"Registrasi Akun",
-          url:"/akun/tambah-akun",
+          url:"/akun/register-akun",
         },
         {
           title:"Manajemen User",
