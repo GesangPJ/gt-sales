@@ -104,20 +104,8 @@ const data = {
           url:"/akun/register-akun",
         },
         {
-          title:"Manajemen User",
-          url:"/akun/kelola-user",
-        },
-        {
-          title:"Manajemen Admin",
-          url:"/akun/kelola-admin",
-        },
-        {
-          title:"Daftar Session",
-          url:"/akun/sesi",
-        },
-        {
-          title:"Manajemen Sesi",
-          url:"/akun/kelola-sesi",
+          title:"Edit Data Akun",
+          url:"/akun/edit-akun",
         },
       ]
     },
