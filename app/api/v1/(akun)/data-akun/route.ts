@@ -1,8 +1,8 @@
 
 // API Data Akun
 
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextResponse, NextRequest } from "next/server"
+import prisma from "@/lib/prisma"
 
 export async function GET(){
 
@@ -15,8 +15,7 @@ export async function GET(){
                 email:true,
                 alamat:true,
                 notelp:true,
-                createdAt:true,
-                updatedAt:true,
+                banned:true,
             }
         })
 
@@ -39,5 +38,57 @@ export async function GET(){
         return NextResponse.json({
             message:"Server Error API Akun"
         }, {status:500})
+    }
+}
+
+export async function PUT(req: NextRequest){
+
+    try{
+
+        const body = await req.json()
+
+        const {
+            idakun,
+            name,
+            alamat,
+            notelp,
+        } = body
+
+        if(!idakun || !name){
+            return NextResponse.json({
+                message: "ID atau nama tidak boleh kosong!"
+            }, {status: 400})
+        }
+
+        const edit_akun = await prisma.user.update({
+            where:{id:idakun},
+            data:{
+                name,
+                alamat,
+                notelp
+            }
+        })
+
+        if(!edit_akun){
+            console.error("Akun tidak ditemukan")
+            return NextResponse.json({
+                message:"Akun tidak ditemukan"
+            }, {status: 404})
+        }
+
+        console.log("Berhasil menyimpan perubahan akun", edit_akun)
+        return NextResponse.json({
+            message:"Berhasil menyimpan perubahan akun",
+            data: edit_akun,
+        }, {status: 200})
+
+        
+
+    }catch(error){
+    console.error("Error API Akun", error)
+    return NextResponse.json({
+        message:"Server Error API Akun"
+    }, {status:500})
+
     }
 }
