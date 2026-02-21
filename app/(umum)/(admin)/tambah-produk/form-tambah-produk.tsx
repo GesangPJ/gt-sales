@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { useState, useEffect, useRef } from 'react'
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import {IconArrowBadgeDownFilled, IconChevronDown} from "@tabler/icons-react"
+import {IconArrowBadgeDownFilled, IconHexagonPlus, IconChevronDown} from "@tabler/icons-react"
 import { Input } from "@/components/ui/input"
 import {
   Field,
@@ -27,6 +27,17 @@ import { InputGroup,
         InputGroupInput,
         InputGroupTextarea, } from "@/components/ui/input-group"
 import {Save} from "lucide-react"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,6 +70,7 @@ export default function FormTambahProduk(){
     const [distributors, setDistributors] = useState<Distributor[]>([])
     const [selectedDistributor, setSelectedDistributor] = useState<Distributor | null>(null)
     const [selectedDistributorId, setSelectedDistributorId] = useState<string>("")
+    const [open, setOpen] = useState(false)
 
     const {data: session, isPending} = authClient.useSession()
 
@@ -195,8 +207,10 @@ export default function FormTambahProduk(){
 
             if(!respon.ok){
                 toast.error("Tidak dapat menambahkan produk")
+                setOpen(false)
             }
 
+            setOpen(false)
             toast.success("Berhasil menyimpan produk")
             clear()
 
@@ -216,7 +230,7 @@ export default function FormTambahProduk(){
     </CardTitle>
     </CardHeader>
     <CardContent>
-    <form onSubmit={form.handleSubmit(simpanProduk)} noValidate>
+    <form noValidate>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
         <FieldGroup>
             <Field>
@@ -406,11 +420,40 @@ export default function FormTambahProduk(){
     >
         Reset
     </Button>
-    <Button type="submit" disabled={loading || !selectedKategori || isPending}
+    <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger
+        render={<Button disabled={loading || !selectedKategori || isPending}
+        onClick={()=> setOpen(true)}
+        className="flex-1 h-14 text-lg" >
+        <IconHexagonPlus className="h-32 w-32" />
+        {isSubmitting ? "Menyimpan..." : "Simpan"}
+    </Button>}
+        />
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>Simpan Produk?</AlertDialogTitle>
+                <AlertDialogDescription>
+                    Apakah anda yakin untuk menyimpan produk ini?
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel variant="destructive">Batal</AlertDialogCancel>
+                <AlertDialogAction
+                onClick={form.handleSubmit(simpanProduk)}
+                className="bg-green-100 text-green-700 hover:bg-green-100"
+                >
+                    <IconHexagonPlus className="h-32 w-32" />
+                    Simpan
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+
+    {/* <Button type="submit" disabled={loading || !selectedKategori || isPending}
     className="flex-1 h-14 text-lg" >
         <Save className="h-32 w-32" />
         {isSubmitting ? "Menyimpan..." : "Simpan"}
-    </Button>
+    </Button> */}
     </div>
     </Field>
     </form>
