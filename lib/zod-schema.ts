@@ -15,6 +15,13 @@ export const brandSchema = z.object({
   nama: z.string().trim().min(1,"Nama brand harus diisi!")
 })
 
+export const editAkunSchema = z.object({
+  name: z.string().trim().min(1, "Nama wajib diisi"),
+  notelp: z.string().trim().optional(),
+  alamat: z.string().trim().max(250).optional().or(z.literal("")),
+
+})
+
 export const registrasiSchema = z
   .object({
     email: z.email("Format email tidak valid")
@@ -60,6 +67,7 @@ export const editProduk = z.object({
   hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
 })
 
+export type EditAkunSchema = z.infer<typeof editAkunSchema>
 export type EditProdukSchema = z.infer<typeof editProduk>
 export type ProdukSchema = z.infer<typeof tambahProduk>
 export type DistributorSchema = z.infer<typeof distributorSchema>
