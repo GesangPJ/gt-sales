@@ -232,6 +232,28 @@ export const kolom_akun = ({
 
         }
 
+        const cabutSesi = async (iduser:string) => {
+
+          try{
+            const {error} =  await authClient.admin.revokeUserSessions({
+              userId: iduser,
+            })
+
+          if (error) {
+                toast.error(error.message)
+                return
+          }
+
+          toast.success("Berhasil cabut sesi akun")
+          window.location.reload()
+
+
+          }catch(err){
+            console.error(err)
+            toast.error("Terjadi kesalahan")
+          }
+        }
+
       return (
         <Popover>
           <PopoverTrigger render={<Button variant="outline"><IconDots/></Button>} />
@@ -287,9 +309,36 @@ export const kolom_akun = ({
             </AlertDialogContent>
             </AlertDialog>
             ) }
+
+            <AlertDialog>
+              <AlertDialogTrigger 
+              render={<Button variant="destructive" >Cabut Sesi</Button>} />
+              <AlertDialogContent size="sm">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Hapus semua session akun {nama} ?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Ini akan membuat akun keluar dari semua perangkat.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel variant="outline">
+                    Batal
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                  onClick={()=>cabutSesi(id)}
+                  variant="destructive"
+                  >
+                    Cabut Sesi Akun
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+
+            </AlertDialog>
             
           <Button size="sm" variant="outline">
-            <Link href={`/akun/detail-akun/${id}`}>Detail</Link>
+            <Link href={`/akun/detail-akun/${id}`}>Detail Akun</Link>
           </Button>
 
           </PopoverContent>
