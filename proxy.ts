@@ -20,6 +20,7 @@ export async function proxy(request: NextRequest) {
       "/tambah-produk",
       "/edit-produk", 
       "/kategori",
+      "/pembelian",
       "/brand", 
       "/jurnal", 
       "/laporan"].some(p =>
@@ -39,7 +40,7 @@ export async function proxy(request: NextRequest) {
 
   // BUTUH LOGIN
   if (
-    ["/kasir", "/produk", "/pembelian","/profile"].some(p =>
+    ["/kasir", "/produk","/profile"].some(p =>
       pathname.startsWith(p)
     )
   ) {
