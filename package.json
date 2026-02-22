@@ -18,7 +18,7 @@
     "@base-ui/react": "^1.1.0",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/adapter-libsql": "^7.4.0",
-    "@prisma/client": "^7.4.0",
+    "@prisma/client": "^7.4.1",
     "@tabler/icons-react": "^3.36.1",
     "@tanstack/react-table": "^8.21.3",
     "@types/better-sqlite3": "^7.6.13",
@@ -30,7 +30,7 @@
     "lucide-react": "^0.563.0",
     "next": "16.1.6",
     "next-themes": "^0.4.6",
-    "prisma": "^7.4.0",
+    "prisma": "^7.4.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.1",
@@ -57,6 +57,9 @@
     "unrs-resolver"
   ],
   "trustedDependencies": [
+    "@prisma/engines",
+    "msw",
+    "prisma",
     "sharp",
     "unrs-resolver"
   ]
