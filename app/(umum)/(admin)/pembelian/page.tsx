@@ -7,7 +7,7 @@ export default function HalamanPembelian(){
 
 return(
     <div>
-      <h1 className="text-xl text-center font-bold">Pembelian Produk</h1>
+      <h1 className="text-2xl text-center font-mono font-bold">Pembelian Produk</h1>
       <FormPembelian/> 
     </div>
 )
