@@ -6,7 +6,7 @@ import { useState, useEffect} from 'react'
 import { keranjangPembelian } from './keranjang-pembelian'
 import { toast } from "sonner"
 import { Button } from '@/components/ui/button'
-import { Search, InfoIcon, Warehouse } from "lucide-react"
+import { Search, InfoIcon} from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -31,15 +31,6 @@ import { switchAPI } from '@/lib/select-API'
 import {IconArrowBadgeDownFilled, IconDeviceFloppy} from "@tabler/icons-react"
 import { authClient } from "@/lib/auth-client"
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -51,6 +42,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import RippleWaveLoader from '@/components/mvpblocks/ripple-loader'
+import { Separator } from '@/components/ui/separator'
 
 interface CartItem {
   id: string
@@ -407,7 +399,7 @@ export default function FormPembelian(){
                     </InputGroupButton>
                     }/>
                     <TooltipContent>
-                    <p>Masukkan biaya jika ada biaya pengiriman</p>
+                    <p>Masukkan Biaya pengiriman jika ada.</p>
                     </TooltipContent>
                 </Tooltip>
                 </InputGroupAddon>
@@ -415,11 +407,13 @@ export default function FormPembelian(){
             </div>
            <div className="text-right md:text-right space-y-2 mr-5 md:max-w-md md:ml-auto">
             
-            <div className="text-3xl font-bold">
+            <div className="text-3xl font-bold mb-3">
                 Jumlah Total: {formatRupiah(totalsemua)}
             </div>
             </div>
-            <div className="flex gap-3">
+             <Separator/>
+            <div className="flex gap-3 mt-5">
+             
             <Button
                 variant="destructive" 
                 className="flex-1 h-14 text-xl"
