@@ -53,7 +53,11 @@ export const distributorSchema = z.object({
 
 export const tambahProduk = z.object({
   namaproduk: z.string().trim().min(1, "Nama produk wajib diisi!"),
-  barcodeproduk: z.string().trim().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit"),
+  barcodeproduk: z
+  .preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().regex(/^[0-9]{13}$/, "Barcode retail wajib 13 digit").optional()
+  ),
   hargajual: z.coerce.number().min(1, "Harga wajib diisi"),
   hargabeli: z.coerce.number().min(1, "Harga wajib diisi"),
   stokproduk: z.coerce.number().min(1,"Stok wajib diisi"),
