@@ -321,13 +321,19 @@ export default function FormTambahProduk(){
                                 <IconArrowBadgeDownFilled className="ml-2" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {kategoris.map((kategori) => (
-                            <DropdownMenuItem
+                            {[...kategoris]
+                            .sort((a, b) =>
+                                a.nama_kategori.localeCompare(b.nama_kategori, "id", {
+                                sensitivity: "base",
+                                })
+                            )
+                            .map((kategori) => (
+                                <DropdownMenuItem
                                 key={kategori.id}
                                 onClick={() => setSelectedKategori(kategori)}
-                            >
+                                >
                                 {kategori.nama_kategori}
-                            </DropdownMenuItem>
+                                </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -342,13 +348,19 @@ export default function FormTambahProduk(){
                                 <IconArrowBadgeDownFilled className="ml-2" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {brands.map((brand) => (
-                            <DropdownMenuItem
+                             {[...brands]
+                            .sort((a, b) =>
+                                a.nama_brand.localeCompare(b.nama_brand, "id", {
+                                sensitivity: "base",
+                                })
+                            )
+                            .map((brand) => (
+                                <DropdownMenuItem
                                 key={brand.id}
                                 onClick={() => setSelectedBrand(brand)}
-                            >
+                                >
                                 {brand.nama_brand}
-                            </DropdownMenuItem>
+                                </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
