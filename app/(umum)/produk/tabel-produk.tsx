@@ -15,7 +15,7 @@ export default async function TabelProduk(){
         const respon = await fetch(`${baseUrl}${switchAPI}/data-produk`,{
             next:{
                 tags:['produk'],
-                revalidate: 120,
+                revalidate: 86400,
             }
         })
 
