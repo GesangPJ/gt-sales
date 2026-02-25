@@ -113,11 +113,6 @@ export default async function HalamanDetailProduk({params}: ProdukProp){
                 <p className="whitespace-normal wrap-break-word">{produks.brand?.nama_brand ?? "-"}</p>
             </div>
             <div className="grid grid-cols-[auto_auto_1fr] items-start gap-x-1">
-                <p className="font-medium text-left w-25">Distributor</p>
-                <p className="text-center">:</p>
-                <p className="whitespace-normal wrap-break-word">{produks.distributor?.nama_distributor ?? "-"}</p>
-            </div>
-            <div className="grid grid-cols-[auto_auto_1fr] items-start gap-x-1">
                 <p className="font-medium text-left w-25">Admin</p>
                 <p className="text-center">:</p>
                 <p className="whitespace-normal wrap-break-word">{produks.user?.name ?? "-"}</p>

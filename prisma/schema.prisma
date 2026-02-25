@@ -23,12 +23,10 @@ model Produk {
   updatedAt     DateTime  @updatedAt
 
   userId        String
-  distributorId String?
   brandId       String?
   kategoriId    String
 
   pembeliandetail PembelianDetail[]
-  distributor   Distributor?   @relation(fields: [distributorId], references: [id], onDelete: SetNull)
   kategori      Kategori       @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
   brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
   user          User           @relation(fields: [userId], references: [id], onDelete: Restrict)
@@ -167,7 +165,6 @@ model Distributor {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  produk        Produk[]
   pembelian     Pembelian[]
 
   @@index([nama_distributor])

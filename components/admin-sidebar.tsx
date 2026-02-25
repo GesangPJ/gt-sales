@@ -162,15 +162,11 @@ const data = {
       items: [
         {
           title: "Daftar Pembelian",
-          url: "/pembelian/data-pembelian",
+          url: "/pembelian/daftar-pembelian",
         },
         {
           title: "Buat Pembelian",
           url: "/pembelian",
-        },
-        {
-          title: "Status Pembelian",
-          url: "/pembelian/status-pembelian",
         },
         {
           title: "Edit Pembelian",

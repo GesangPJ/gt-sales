@@ -26,11 +26,6 @@ export async function GET(){
                         nama_kategori:true,
                     }
                 },
-                distributor:{
-                    select:{
-                        nama_distributor:true,
-                    }
-                }
 
             }
         })
@@ -44,7 +39,6 @@ export async function GET(){
         const hasil = data_produk.map((produk)=>({
             ...produk,
             namakategori: produk.kategori?.nama_kategori ?? "-",
-            namadistributor: produk.distributor?.nama_distributor ?? "-",
         }))
 
         return NextResponse.json({
@@ -74,7 +68,6 @@ export async function POST(req: NextRequest){
             barcodeproduk,
             idkategori,
             hargabeli,
-            iddistributor,
             idbrand,
             hargajual,
             stokproduk,
@@ -96,7 +89,6 @@ export async function POST(req: NextRequest){
                 stok:parseInt(stokproduk),
                 kategoriId:idkategori,
                 userId:idadmin,
-                distributorId:iddistributor,
                 brandId:idbrand,
                 keterangan,
                 isActive:true,
@@ -139,7 +131,6 @@ export async function PUT(req: NextRequest){
         barcodeproduk,
         hargajual,
         hargabeli,
-        iddistributor,
         keterangan,
 
     } = body
@@ -158,7 +149,6 @@ export async function PUT(req: NextRequest){
             harga_beli:hargabeli,
             harga_jual:hargajual,
             keterangan,
-            distributorId:iddistributor,
         }
     })
 

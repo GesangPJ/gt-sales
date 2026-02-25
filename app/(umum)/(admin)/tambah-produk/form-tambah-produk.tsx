@@ -26,7 +26,6 @@ import { InputGroup,
         InputGroupText,
         InputGroupInput,
         InputGroupTextarea, } from "@/components/ui/input-group"
-import {Save} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,9 +66,6 @@ export default function FormTambahProduk(){
     const [brands, setBrands] = useState<Brand[]>([])
     const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null)
     const [selectedBrandId, setSelectedBrandId] = useState<string>("")
-    const [distributors, setDistributors] = useState<Distributor[]>([])
-    const [selectedDistributor, setSelectedDistributor] = useState<Distributor | null>(null)
-    const [selectedDistributorId, setSelectedDistributorId] = useState<string>("")
     const [open, setOpen] = useState(false)
 
     const {data: session, isPending} = authClient.useSession()
@@ -92,7 +88,6 @@ export default function FormTambahProduk(){
         setKeterangan("")
         setSelectedBrand(null)
         setSelectedKategori(null)
-        setSelectedDistributor(null)
     }
 
     async function ambilKategori(){
@@ -135,33 +130,11 @@ export default function FormTambahProduk(){
         }
     }
 
-    async function ambilDistributor(){
-
-        try{
-
-            const respon = await fetch(`${baseUrl}${switchAPI}/data-distributor`,{
-                next:{
-                    tags:['distributor'],
-                    revalidate:3600,
-                }
-            })
-            if(!respon.ok){
-                throw new Error("Gagal ambil data brand!")
-            }
-            const hasil = await respon.json()
-            setDistributors(hasil.data)
-
-        }catch(error){
-            console.error("Gagal ambil brand", error)
-        }
-    }
-
     const idAdmin = session?.user?.id ?? null
 
     useEffect(()=>{
         ambilBrand()
         ambilKategori()
-        ambilDistributor()
     },[])
 
     const handleSelectKategori = (id: string) => {
@@ -174,12 +147,6 @@ export default function FormTambahProduk(){
         setSelectedBrandId(id)
         const brand = brands.find(x => x.id.toString() === id)
         setSelectedBrand(brand || null)
-    }
-
-    const handleSelectedDistributor = (id: string) => {
-        setSelectedDistributorId(id)
-        const distributor = distributors.find(x => x.id.toString() === id)
-        setSelectedDistributor(distributor || null)
     }
 
     const simpanProduk = async (data:ProdukSchema) => {
@@ -196,7 +163,6 @@ export default function FormTambahProduk(){
                 keterangan: keterangan,
                 idkategori: selectedKategori?.id,
                 idbrand: selectedBrand?.id ?? null,
-                iddistributor: selectedDistributor?.id ?? null
             }
 
             const respon = await fetch(`${baseUrl}${switchAPI}/data-produk`,{
@@ -354,13 +320,19 @@ export default function FormTambahProduk(){
                                 <IconArrowBadgeDownFilled className="ml-2" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {kategoris.map((kategori) => (
-                            <DropdownMenuItem
+                            {[...kategoris]
+                            .sort((a, b) =>
+                                a.nama_kategori.localeCompare(b.nama_kategori, "id", {
+                                sensitivity: "base",
+                                })
+                            )
+                            .map((kategori) => (
+                                <DropdownMenuItem
                                 key={kategori.id}
                                 onClick={() => setSelectedKategori(kategori)}
-                            >
+                                >
                                 {kategori.nama_kategori}
-                            </DropdownMenuItem>
+                                </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -375,39 +347,23 @@ export default function FormTambahProduk(){
                                 <IconArrowBadgeDownFilled className="ml-2" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {brands.map((brand) => (
-                            <DropdownMenuItem
+                             {[...brands]
+                            .sort((a, b) =>
+                                a.nama_brand.localeCompare(b.nama_brand, "id", {
+                                sensitivity: "base",
+                                })
+                            )
+                            .map((brand) => (
+                                <DropdownMenuItem
                                 key={brand.id}
                                 onClick={() => setSelectedBrand(brand)}
-                            >
+                                >
                                 {brand.nama_brand}
-                            </DropdownMenuItem>
+                                </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </Field>
-                {/* Distributor*/}
-                <Field className="mt-3 max-w-100">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="outline" className="w-full justify-between" />}>
-                                {selectedDistributor
-                                    ? selectedDistributor.nama_distributor
-                                    : "Pilih Distributor"}{" "}
-                                <IconArrowBadgeDownFilled className="ml-2" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {distributors.map((distributor) => (
-                            <DropdownMenuItem
-                                key={distributor.id}
-                                onClick={() => setSelectedDistributor(distributor)}
-                            >
-                                {distributor.nama_distributor}
-                            </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </Field>
-
         </FieldGroup>
         
     </div>
@@ -448,12 +404,6 @@ export default function FormTambahProduk(){
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>
-
-    {/* <Button type="submit" disabled={loading || !selectedKategori || isPending}
-    className="flex-1 h-14 text-lg" >
-        <Save className="h-32 w-32" />
-        {isSubmitting ? "Menyimpan..." : "Simpan"}
-    </Button> */}
     </div>
     </Field>
     </form>
