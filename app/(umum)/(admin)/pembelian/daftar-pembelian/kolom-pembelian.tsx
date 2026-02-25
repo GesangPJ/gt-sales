@@ -297,6 +297,9 @@ export const kolom_pembelian = ({
             </AlertDialogContent>
 
             </AlertDialog>
+            <Button variant="outline">
+              <Link href={`/pembelian/edit-pembelian/${id}`}>Edit Pembelian</Link>
+            </Button>
             </div>
             )}
 
