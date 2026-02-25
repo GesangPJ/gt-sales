@@ -51,6 +51,7 @@ model Penjualan {
   nilai_diskon    Int?
   persen_diskon   Decimal?
   keterangan      String?
+  nama_pelanggan  String?
 
   userId          String
   createdAt       DateTime    @default(now())
