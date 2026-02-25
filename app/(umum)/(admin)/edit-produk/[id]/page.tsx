@@ -8,8 +8,6 @@ import { switchAPI } from "@/lib/select-API"
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -29,12 +27,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import {Save, ArrowLeft} from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { InputGroup,
         InputGroupAddon, 
         InputGroupText,
@@ -51,7 +43,6 @@ type ProdukApi = {
   barcode: string
   harga_beli: number
   harga_jual: number
-  distributorId: string
   keterangan?: string
 }
 
@@ -64,15 +55,10 @@ export default function HalamanEditProduk({ params }: EditProdukProps){
 
     const {id} = use(params)
     const [dataProduk, setDataProduk] = useState<ProdukApi | null>(null)
-    const [distributors, setDistributors] = useState<Distributor[]>([])
-    const [distributorId, setDistributorId] = useState<string>("")
-    const [selectedDistributor, setSelectedDistributor] = useState<Distributor | null>(null)
-    const [selectedDistributorId, setSelectedDistributorId] = useState("")
     const [keterangan, setKeterangan] = useState("")
-    const maxLength = 150 // banyaknya kata untuk textarea
-    const remaining = maxLength - keterangan.length  //sisa kata untuk textarea
+    const maxLength = 150 
+    const remaining = maxLength - keterangan.length
     const [loading, setLoading] = useState(false)
-
 
     const {data: session, isPending} = authClient.useSession()
 
@@ -97,7 +83,6 @@ export default function HalamanEditProduk({ params }: EditProdukProps){
       const produk = hasil.data
 
       setDataProduk(produk)
-      setSelectedDistributorId(produk.distributorId)
       setKeterangan(produk.keterangan)
 
       // Isi default form
@@ -113,48 +98,10 @@ export default function HalamanEditProduk({ params }: EditProdukProps){
       setLoading(false)
     }
   }
-    async function ambilDistributor(){
-    
-        try{
-
-            const respon = await fetch(`${baseUrl}${switchAPI}/data-distributor`,{
-                next:{
-                    tags:['distributor'],
-                    revalidate:3600,
-                }
-            })
-            if(!respon.ok){
-                throw new Error("Gagal ambil data brand!")
-            }
-            const hasil = await respon.json()
-            setDistributors(hasil.data)
-
-        }catch(error){
-            console.error("Gagal ambil brand", error)
-        }
-    }
 
     useEffect(()=>{
         ambilProduk()
-        ambilDistributor()
     }, [id])
-
-    useEffect(() => {
-    if (dataProduk && distributors.length > 0) {
-        const dist = distributors.find(
-        (d) => d.id === dataProduk.distributorId
-        )
-
-        if (dist) setSelectedDistributor(dist)
-    }
-    }, [dataProduk, distributors])
-
-    const handleSelectedDistributor = (id: string) => {
-        setSelectedDistributorId(id)
-        const distributor = distributors.find(x => x.id.toString() === id)
-        setSelectedDistributor(distributor || null)
-    }
-
 
     const idAdmin = session?.user?.id ?? null
 
@@ -170,7 +117,6 @@ export default function HalamanEditProduk({ params }: EditProdukProps){
             const payload = {
             ...data,
             idproduk: id,
-            iddistributor: selectedDistributor?.id ?? null,
             keterangan: keterangan,
             idadmin: idAdmin,
             }
@@ -299,27 +245,6 @@ export default function HalamanEditProduk({ params }: EditProdukProps){
                     </InputGroupAddon>
                 </InputGroup>
             </Field>
-                {/* Distributor*/}
-                <Field className="mt-3 max-w-100">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="outline" className="w-full justify-between" />}>
-                                {selectedDistributor
-                                    ? selectedDistributor.nama_distributor
-                                    : "Pilih Distributor"}{" "}
-                                <IconArrowBadgeDownFilled className="ml-2" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="max-w-150 max-h-60 overflow-y-auto p-1" align="start">
-                            {distributors.map((distributor) => (
-                            <DropdownMenuItem
-                                key={distributor.id}
-                                onClick={() => setSelectedDistributorId(distributor.id)}
-                            >
-                                {distributor.nama_distributor}
-                            </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </Field>
 
         </FieldGroup>
         
