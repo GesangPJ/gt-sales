@@ -63,8 +63,6 @@ export default function FormEditAkun(){
     const remaining = maxLength - alamat.length
     const [open, setOpen] = useState(false)
 
-    
-
     useEffect(()=>{
         ambilAkun()
     }, [])
