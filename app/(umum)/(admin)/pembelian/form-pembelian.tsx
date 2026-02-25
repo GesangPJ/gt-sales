@@ -41,6 +41,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import RippleWaveLoader from '@/components/mvpblocks/ripple-loader'
 import { Separator } from '@/components/ui/separator'
 
@@ -54,7 +64,7 @@ interface CartItem {
   stok: number,
 }
 
-type Produk = {
+export type Produk = {
     id: string,
     nama_produk: string,
     harga_beli: number,
@@ -94,12 +104,20 @@ function CartRow({ item }: { item: CartItem }) {
 
   const total = item.harga_beli * item.jumlah
 
+  useEffect(() => {
+    setHarga(item.harga_beli)
+    }, [item.harga_beli])
+
+    useEffect(() => {
+    setQty(item.jumlah)
+    }, [item.jumlah])
+
   return (
-    <tr className="border-t">
-      <td className="p-2">{item.nama_produk}</td>
+    <TableRow className="border-t">
+      <TableCell className="p-2">{item.nama_produk}</TableCell>
 
       {/* Harga Beli */}
-      <td className="p-2">
+      <TableCell className="p-2">
         {editing ? (
           <input
             type="number"
@@ -124,10 +142,10 @@ function CartRow({ item }: { item: CartItem }) {
             {formatRupiah(item.harga_beli)}
           </div>
         )}
-      </td>
+      </TableCell>
 
       {/* Jumlah */}
-      <td className="p-2">
+      <TableCell className="p-2">
         <input
           type="number"
           min="1"
@@ -139,28 +157,28 @@ function CartRow({ item }: { item: CartItem }) {
           }}
           className="w-20 border p-1"
         />
-      </td>
+      </TableCell>
 
       {/* Total */}
-      <td className="p-2 font-medium">
+      <TableCell className="p-2 font-medium">
         {formatRupiah(total)}
-      </td>
+      </TableCell>
 
       {/* Delete */}
-      <td className="p-2">
+      <TableCell className="p-2">
         <button
           onClick={() => removeItem(item.id)}
           className="bg-red-500 text-white px-2 py-1"
         >
           X
         </button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }
 
 export default function FormPembelian(){
-   const items = keranjangPembelian((s) => s.items)
+    const items = keranjangPembelian((s) => s.items)
     const addItem = keranjangPembelian((s) => s.addItem)
     const clear = keranjangPembelian((s) => s.clear)
     const [search, setSearch] = useState("")
@@ -352,23 +370,23 @@ export default function FormPembelian(){
 
         {/* <DataTable columns={columnpembelian as any} data={data} /> */}
         <div className="flex-1 overflow-y-auto">
-            <table className="w-full text-sm border">
-            <thead className="bg-muted">
-                <tr>
-                <th className="text-left p-2">Nama</th>
-                <th className="text-left p-2">Harga Beli</th>
-                <th className="text-left p-2 w-24">Jumlah</th>
-                <th className="text-left p-2">Total Harga</th>
-                <th className="text-left p-2 w-10">Hapus</th>
-                </tr>
-            </thead>
+            <Table className="w-full text-sm border">
+            <TableHeader className="bg-muted">
+                <TableRow>
+                <TableHead className="text-left p-2">Nama</TableHead>
+                <TableHead className="text-left p-2">Harga Beli</TableHead>
+                <TableHead className="text-left p-2 w-24">Jumlah</TableHead>
+                <TableHead className="text-left p-2">Total Harga</TableHead>
+                <TableHead className="text-left p-2 w-10">Hapus</TableHead>
+                </TableRow>
+            </TableHeader>
 
-            <tbody>
+            <TableBody>
                 {items.map((item) => (
                 <CartRow key={item.id} item={item} />
                 ))}
-            </tbody>
-            </table>
+            </TableBody>
+            </Table>
         </div>
 
         <div className="sticky bottom-0 bg-background border-t p-4">
