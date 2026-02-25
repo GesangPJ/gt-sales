@@ -26,7 +26,6 @@ import { InputGroup,
         InputGroupText,
         InputGroupInput,
         InputGroupTextarea, } from "@/components/ui/input-group"
-import {Save} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -405,12 +404,6 @@ export default function FormTambahProduk(){
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>
-
-    {/* <Button type="submit" disabled={loading || !selectedKategori || isPending}
-    className="flex-1 h-14 text-lg" >
-        <Save className="h-32 w-32" />
-        {isSubmitting ? "Menyimpan..." : "Simpan"}
-    </Button> */}
     </div>
     </Field>
     </form>
