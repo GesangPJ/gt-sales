@@ -131,7 +131,6 @@ export async function PUT(req: NextRequest){
         barcodeproduk,
         hargajual,
         hargabeli,
-        iddistributor,
         keterangan,
 
     } = body
