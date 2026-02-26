@@ -6,8 +6,7 @@ import prisma from "@/lib/prisma"
 export async function GET(req: NextRequest){
 
     try{
-        const body = await req.json()
-        const barcode_p = body as string
+        const barcode_p = req.nextUrl.searchParams.get("barcode")
 
         if(!barcode_p){
             return NextResponse.json({
