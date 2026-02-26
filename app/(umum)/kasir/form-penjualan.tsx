@@ -2,7 +2,7 @@
 // Form Penjualan Produk (Kasir)
 'use client'
 
-import { useState} from "react"
+import { useState, useRef, useEffect} from "react"
 import { keranjangPenjualan } from "./keranjang-penjualan"
 import { Label } from "@/components/ui/label"
 import { useDebouncedCallback } from "use-debounce" 
@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table"
 import { toast } from "sonner"
 import { Button } from '@/components/ui/button'
-import { Search, InfoIcon} from "lucide-react"
+import { Search, InfoIcon, ScanQrCode} from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -73,6 +73,8 @@ export default function FormPenjualan(){
     const items = keranjangPenjualan((s) => s.items)
     const addItem = keranjangPenjualan((s)=> s.addItem)
     const clear = keranjangPenjualan((s)=>s.clear)
+    const barcodeRef = useRef<HTMLInputElement>(null)
+    const [barcode, setBarcode] = useState("")
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState<Produk[]>([])
     const [loadingBayar, setLoadingBayar] = useState(false)
@@ -85,6 +87,12 @@ export default function FormPenjualan(){
     const maxLength = 150 // banyaknya kata untuk textarea
     const remaining = maxLength - keterangan.length  //sisa kata
     const [metodeTransaksi, setMetodeTransaksi] = useState<MetodeTransaksi | null>(null)
+
+    // useEffect(() => {
+    //     if (barcode.length >= 8) {
+    //     handleBarcodeScan(barcode)
+    //     }
+    // }, [barcode])
 
     const debouncedSearch = useDebouncedCallback(async (query: string) => {
         if (query.length < 2) {
@@ -103,6 +111,28 @@ export default function FormPenjualan(){
         }
     }, 300)
 
+    // Barcode Scan
+    const handleBarcodeScan = async (code: string) => {
+    try {
+      const res = await fetch(`${baseUrl}${switchAPI}/cari-produk-barcode?barcode=${code}`)
+      
+      if (res.ok) {
+        const produk = await res.json()
+        if (produk.id) {
+          addItem({ ...produk, jumlah: 1 })
+          toast.success(`Ditambahkan: ${produk.nama_produk}`)
+        } else {
+          toast.error("produk tidak ditemukan")
+        }
+      }
+    } catch (error) {
+      toast.error("Error scan barcode")
+    } finally {
+      setBarcode("")  // clear barcode
+      barcodeRef.current?.focus()
+    }
+    }
+
     const formatRupiah = (value: number) =>
     new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -114,6 +144,7 @@ export default function FormPenjualan(){
 
     const Reset = () => {
         clear()
+        setBarcode("")
         setJumlahDiskon(0)
         setNamaPelanggan("")
         setKeterangan("")
@@ -187,6 +218,18 @@ const totalsemua = total - jumlahDiskon
         setSearch("")
         setSearchResults([])
     }
+const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === "Enter") {
+    e.preventDefault()
+
+    if (barcode.trim().length < 8) {
+      toast.error("Barcode minimal 8 digit")
+      return
+    }
+
+    handleBarcodeScan(barcode.trim())
+  }
+}
 
 const handleBayar = async () => {
     setLoadingBayar(true)
@@ -216,7 +259,7 @@ const handleBayar = async () => {
 
         if(respon.ok){
         setOpen(false)
-        toast.success('Transaksi Pembelian berhasil! 🎉')
+        toast.success('Transaksi Penjualan berhasil! 🎉')
         Reset()
         }else{
         setOpen(false)
@@ -232,6 +275,8 @@ const handleBayar = async () => {
 
 return(
     <div className="space-y-4">
+
+{/* Nama Pelanggan (opsional) */}
         <InputGroup className="max-w-100">
         <InputGroupInput
         className="font-mono text-xl"
@@ -246,7 +291,23 @@ return(
         </InputGroupAddon>
     </InputGroup>
 
-{/* Cari Produk */}
+{/* Cari Produk via Barcode */}
+<InputGroup className="mb-4">
+    <InputGroupInput
+  ref={barcodeRef}
+  placeholder="Barcode... (min 8 digit)"
+  value={barcode}
+  onChange={(e) => setBarcode(e.target.value)}
+  onKeyDown={handleKeyDown}
+  className="text-xl tracking-widest font-mono"
+  autoFocus
+/>
+      <InputGroupAddon>
+      <ScanQrCode className="h-5 w-5" />
+      </InputGroupAddon>
+</InputGroup>
+
+{/* Cari Produk via Nama Produk */}
         <InputGroup>
         <InputGroupInput
         className="font-mono text-xl tracking-widest"
