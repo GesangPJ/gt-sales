@@ -14,6 +14,7 @@ export async function GET(){
                 id:true,
                 kode_penjualan:true,
                 jumlahtotal:true,
+                status_penjualan: true,
                 metode_bayar:true,
                 persen_diskon:true,
             }
@@ -180,7 +181,11 @@ export async function PATCH(req: NextRequest){
 
    const id = req.nextUrl.searchParams.get("id")
 
-  if (!id) {
+   const body = await req.json()
+
+   const {idadmin} = body
+
+  if (!id || !idadmin) {
     return NextResponse.json(
       { message: "ID tidak boleh kosong!" },
       { status: 400 }
@@ -208,7 +213,10 @@ export async function PATCH(req: NextRequest){
       // 2. Update status jadi BATAL
       await tx.penjualan.update({
         where: { id },
-        data: { status_penjualan: "BATAL" },
+        data: { 
+          status_penjualan: "BATAL",
+          userId: idadmin,
+         },
       })
 
       // 3. Kembalikan stok produk
