@@ -1,8 +1,6 @@
 // Tabel daftar akun
 
-import { kolom_akun, Akun  } from "./kolom-akun";
-
-import { DataTable } from "@/components/data-table"
+import { Akun  } from "./kolom-akun"
 import { baseUrl } from "@/lib/base-url"
 import { switchAPI } from "@/lib/select-API"
 import { auth } from "@/lib/auth"
@@ -20,7 +18,7 @@ export default async function TabelAkun(){
 
         const respon = await fetch(`${baseUrl}${switchAPI}/data-akun`,
             {
-               cache: 'no-store'
+               next:{tags:['akun']}
             }
         )
 
