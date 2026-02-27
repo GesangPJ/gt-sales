@@ -88,12 +88,6 @@ export default function FormPenjualan(){
     const remaining = maxLength - keterangan.length  //sisa kata
     const [metodeTransaksi, setMetodeTransaksi] = useState<MetodeTransaksi | null>(null)
 
-    // useEffect(() => {
-    //     if (barcode.length >= 8) {
-    //     handleBarcodeScan(barcode)
-    //     }
-    // }, [barcode])
-
     const debouncedSearch = useDebouncedCallback(async (query: string) => {
         if (query.length < 2) {
         setSearchResults([])
@@ -279,7 +273,7 @@ return(
 {/* Nama Pelanggan (opsional) */}
         <InputGroup className="max-w-100">
         <InputGroupInput
-        className="font-mono text-xl"
+        className="font-mono text-sm"
         placeholder="Ketik Nama Pelanggan (opsional)"
         value={namaPelanggan}
         onChange={(e) => {
@@ -299,7 +293,7 @@ return(
   value={barcode}
   onChange={(e) => setBarcode(e.target.value)}
   onKeyDown={handleKeyDown}
-  className="text-xl tracking-widest font-mono"
+  className="text-sm tracking-widest font-mono"
   autoFocus
 />
       <InputGroupAddon>
@@ -310,7 +304,7 @@ return(
 {/* Cari Produk via Nama Produk */}
         <InputGroup>
         <InputGroupInput
-        className="font-mono text-xl tracking-widest"
+        className="font-mono text-sm tracking-widest"
         placeholder="Ketik Nama Produk..."
         value={search}
         onChange={(e) => {
@@ -345,16 +339,24 @@ return(
         </div>
     )}
 
-    <div className="flex-1 overflow-y-auto">
-    <Table className="w-full text-sm border">
-    <TableHeader className="bg-muted">
-        <TableRow>
-        <TableHead className="text-left p-2">Nama</TableHead>
-        <TableHead className="text-left p-2">Harga</TableHead>
-        <TableHead className="text-left p-2 w-24">Jumlah</TableHead>
-        <TableHead className="text-left p-2">Total Harga</TableHead>
-        <TableHead className="text-left p-2 w-10"></TableHead>
-        </TableRow>
+    <div className="border rounded-md max-h-[40vh] overflow-y-auto">
+    <Table className="w-full text-sm border table-fixed">
+    <TableHeader className="bg-muted sticky top-0 z-10">
+      <TableRow>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Nama
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Harga
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2 w-20">
+        Jumlah
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Total
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2 w-10" />
+    </TableRow>
     </TableHeader>
 
     <TableBody>
@@ -365,13 +367,16 @@ return(
     </Table>
     </div>
 
-<div className="sticky bottom-0 bg-background border-t p-4">
+<div className=" bg-background border-t">
 
     <div className="grid grid-cols-1 my-7 md:grid-cols-2 gap-3">
 
     <div>
-         {/* Diskon Dalam Rupiah */}
-  <InputGroup className="max-w-52 mb-7">
+         
+
+<div className="grid grid-cols-2 gap-2">
+  {/* Diskon Dalam Rupiah */}
+  <InputGroup className="max-w-52">
     <InputGroupInput
       id="diskonRupiah"
       type="number"
@@ -450,6 +455,9 @@ return(
       </Tooltip>
     </InputGroupAddon>
   </InputGroup>
+  
+</div>
+  
 </div>
        
 
@@ -478,16 +486,11 @@ onValueChange={(value) => setMetodeTransaksi(value)}
 </div>
 <div className="my-3 flex justify-start md:justify-end">
   <div className="w-full md:w-150">
-    
-    <Label className="mb-2 block">
-      Keterangan (Opsional)
-    </Label>
-
     <InputGroup className="w-full">
       <InputGroupTextarea
         name="keterangan"
         id="keterangan"
-        placeholder="Masukkan Keterangan transaksi"
+        placeholder="Masukkan Keterangan transaksi (opsional)"
         value={keterangan}
         onChange={(e) =>
           setKeterangan(e.target.value.slice(0, maxLength))
@@ -509,12 +512,8 @@ onValueChange={(value) => setMetodeTransaksi(value)}
   </div>
 </div>
 </div>
-
-
     </div>
     <div className="flex flex-col gap-3 max-w-75">
-
-  
 </div>
 
 <div className="text-right space-y-1 mr-5 md:max-w-md md:ml-auto">
@@ -526,7 +525,7 @@ onValueChange={(value) => setMetodeTransaksi(value)}
   )}
 
   {/* Total setelah diskon */}
-  <div className="text-3xl font-bold">
+  <div className="text-xl font-bold">
     Jumlah Total: {formatRupiah(totalsemua)}
   </div>
 
