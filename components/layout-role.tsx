@@ -50,6 +50,14 @@ export async function RoleLayout({children}: Props) {
             {children}
           </div>
         </div>
+        <footer>
+          <div className='mx-auto flex max-w-7xl justify-center px-4 py-4 sm:px-6 border-t-2'>
+            <p className='text-center font-medium text-balance'>
+              &copy; {`${new Date().getFullYear()}`}{' '}
+              GESANG TECHNOLOGY
+            </p>
+          </div>
+        </footer>
       </SidebarInset>
     </SidebarProvider>
   );
