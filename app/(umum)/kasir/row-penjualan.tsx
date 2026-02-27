@@ -14,64 +14,73 @@ import {
 
 export function RowPenjualan({ item }: { item: CartItem }) {
   const { updateQty, removeItem } = keranjangPenjualan()
-  const [qty, setQty] = useState(item.jumlah)
+  const [qtyInput, setQtyInput] = useState("")
 
-  const formatRupiah = (value: number) =>
-    new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(value)
+  const handleUpdate = () => {
+  let numericQty = Number(qtyInput)
 
-  const updateJumlah = () => {
-    updateQty(item.id, qty)
+  if (!numericQty || numericQty < 1) {
+    numericQty = 1
   }
+
+  setQtyInput(String(numericQty))
+  updateQty(item.id, numericQty)
+}
 
   const total = item.harga_jual * item.jumlah
 
+    // useEffect(() => {
+    // setQty(item.jumlah)
+    // }, [item.jumlah])
     useEffect(() => {
-    setQty(item.jumlah)
-    }, [item.jumlah])
+    setQtyInput(String(item.jumlah))
+  }, [item.jumlah])
 
   return (
-    <TableRow className="border-t">
-      <TableCell className="p-2">{item.nama_produk}</TableCell>
+   <TableRow className="border-t">
+  {/* Nama */}
+  <TableCell className="p-2 wrap-break-word whitespace-normal max-w-35 md:max-w-none">
+    {item.nama_produk}
+  </TableCell>
 
-      {/* Harga Jual */}
-      <TableCell className="p-2">
-        {formatRupiah(item.harga_jual)}
-      </TableCell>
+  {/* Harga */}
+  <TableCell className="p-2 text-xs md:text-sm wrap-break-word whitespace-normal max-w-35">
+    Rp{(item.harga_jual).toLocaleString('id-ID')}
+  </TableCell>
 
-      {/* Jumlah */}
-      <TableCell className="p-2">
-        <Input
-          type="number"
-          min="1"
-          value={qty}
-          onChange={(e) => setQty(parseInt(e.target.value) || 1)}
-          onBlur={updateJumlah}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") updateJumlah()
-          }}
-          className="w-20 border p-1"
-        />
-      </TableCell>
+  {/* Jumlah */}
+  <TableCell className="p-2">
+    <Input
+  type="number"
+  min="1"
+  value={qtyInput}
+  onChange={(e) => setQtyInput(e.target.value)}
+  onBlur={handleUpdate}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") handleUpdate()
+  }}
+  onFocus={(e) => e.target.select()}
+  className="max-w-14 md:w-20 border p-1"
+/>
+  </TableCell>
 
-      {/* Total */}
-      <TableCell className="p-2 font-medium">
-        {formatRupiah(total)}
-      </TableCell>
+  {/* Total */}
+  <TableCell className="p-2 font-medium text-xs md:text-sm wrap-break-word whitespace-normal max-w-35">
+    Rp{(total).toLocaleString('id-ID')}
+  </TableCell>
 
-      {/* Delete */}
-      <TableCell className="p-2">
-        <Button
-          onClick={() => removeItem(item.id)}
-          variant="destructive"
-        >
-          X
-        </Button>
-      </TableCell>
-    </TableRow>
+  {/* Delete */}
+  <TableCell className="p-2 md:text-left sm:text-center">
+    <Button
+      onClick={() => removeItem(item.id)}
+      variant="destructive"
+      size="sm"
+      className="px-2"
+    >
+      X
+    </Button>
+  </TableCell>
+</TableRow>
   )
 }
 
