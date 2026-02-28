@@ -29,8 +29,7 @@ export default async function HalamanDetailProduk({params}: ProdukProp){
 
         const respon = await fetch(`${baseUrl}${switchAPI}/detail-produk/?id=${id}`,{
             next:{
-                tags:['produk',`produk-${id}`],
-                revalidate: 3600,
+                tags:[`produk-${id}`],
             }
         })
 

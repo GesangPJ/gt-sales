@@ -26,6 +26,7 @@ model Produk {
   brandId       String?
   kategoriId    String
 
+  penjualandetail PenjualanDetail[]
   pembeliandetail PembelianDetail[]
   kategori      Kategori       @relation(fields: [kategoriId], references: [id], onDelete: Restrict)
   brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
@@ -51,6 +52,7 @@ model Penjualan {
   nilai_diskon    Int?
   persen_diskon   Decimal?
   keterangan      String?
+  nama_pelanggan  String?
 
   userId          String
   createdAt       DateTime    @default(now())
@@ -74,6 +76,7 @@ model PenjualanDetail {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  produk        Produk    @relation(fields: [produkId], references: [id], onDelete: Restrict)
   penjualan     Penjualan @relation(fields: [penjualanId], references: [id], onDelete: Restrict)
 }
 

@@ -16,7 +16,6 @@ export default async function TabelDistributor(){
         const respon = await fetch(`${baseUrl}${switchAPI}/data-distributor`,{
             next:{
                 tags:['distributor'],
-                revalidate:86400,
             }
         })
 

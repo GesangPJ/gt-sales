@@ -6,6 +6,7 @@ import { useState, useEffect} from 'react'
 import { keranjangPembelian } from './keranjang-pembelian'
 import { toast } from "sonner"
 import { Button } from '@/components/ui/button'
+import { Input } from "@/components/ui/input"
 import { Search, InfoIcon} from "lucide-react"
 import {
   Tooltip,
@@ -85,22 +86,27 @@ function CartRow({ item }: { item: CartItem }) {
   const [editing, setEditing] = useState(false)
   const [harga, setHarga] = useState(item.harga_beli)
   const [qty, setQty] = useState(item.jumlah)
+  const [qtyInput, setQtyInput] = useState("")
 
-  const formatRupiah = (value: number) =>
-    new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(value)
+  const handleUpdate = () => {
+  let numericQty = Number(qtyInput)
+
+  if (!numericQty || numericQty < 1) {
+    numericQty = 1
+  }
+
+  setQtyInput(String(numericQty))
+  updateQty(item.id, numericQty)
+}
 
   const updateHarga = () => {
     updateHargaBeli(item.id, harga)
     setEditing(false)
   }
 
-  const updateJumlah = () => {
-    updateQty(item.id, qty)
-  }
+  // const updateJumlah = () => {
+  //   updateQty(item.id, qty)
+  // }
 
   const total = item.harga_beli * item.jumlah
 
@@ -109,17 +115,18 @@ function CartRow({ item }: { item: CartItem }) {
     }, [item.harga_beli])
 
     useEffect(() => {
-    setQty(item.jumlah)
-    }, [item.jumlah])
+    setQtyInput(String(item.jumlah))
+  }, [item.jumlah])
 
   return (
     <TableRow className="border-t">
-      <TableCell className="p-2">{item.nama_produk}</TableCell>
+      <TableCell className="p-2 wrap-break-word whitespace-normal max-w-35 md:max-w-none">
+        {item.nama_produk}</TableCell>
 
       {/* Harga Beli */}
-      <TableCell className="p-2">
+      <TableCell className="p-2 text-xs md:text-sm wrap-break-word whitespace-normal max-w-35 md:max-w-none">
         {editing ? (
-          <input
+          <Input
             type="number"
             value={harga}
             onChange={(e) => setHarga(parseInt(e.target.value) || 0)}
@@ -139,39 +146,40 @@ function CartRow({ item }: { item: CartItem }) {
             onDoubleClick={() => setEditing(true)}
             className="cursor-pointer"
           >
-            {formatRupiah(item.harga_beli)}
+            {(item.harga_beli).toLocaleString('id-ID')}
           </div>
         )}
       </TableCell>
 
       {/* Jumlah */}
       <TableCell className="p-2">
-        <input
-          type="number"
-          min="1"
-          value={qty}
-          onChange={(e) => setQty(parseInt(e.target.value) || 1)}
-          onBlur={updateJumlah}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") updateJumlah()
-          }}
-          className="w-20 border p-1"
-        />
+        <Input
+        type="number"
+        min="1"
+        value={qtyInput}
+        onChange={(e) => setQtyInput(e.target.value)}
+        onBlur={handleUpdate}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleUpdate()
+        }}
+        onFocus={(e) => e.target.select()}
+        className="w-12 md:w-20 border p-1"
+      />
       </TableCell>
 
       {/* Total */}
-      <TableCell className="p-2 font-medium">
-        {formatRupiah(total)}
+      <TableCell className="p-2 text-xs md:text-sm wrap-break-word whitespace-normal max-w-35 md:max-w-none">
+        {(total).toLocaleString('id-ID')}
       </TableCell>
 
       {/* Delete */}
       <TableCell className="p-2">
-        <button
+        <Button
           onClick={() => removeItem(item.id)}
-          className="bg-red-500 text-white px-2 py-1"
+          variant="destructive"
         >
           X
-        </button>
+        </Button>
       </TableCell>
     </TableRow>
   )
@@ -333,7 +341,7 @@ export default function FormPembelian(){
             </div>
             <InputGroup>
             <InputGroupInput
-            className="font-mono text-xl tracking-widest"
+            className="font-mono text-sm tracking-widest"
             placeholder="Ketik Nama Produk..."
             value={search}
             onChange={(e) => {
@@ -368,18 +376,26 @@ export default function FormPembelian(){
             </div>
         )}
 
-        {/* <DataTable columns={columnpembelian as any} data={data} /> */}
-        <div className="flex-1 overflow-y-auto">
-            <Table className="w-full text-sm border">
-            <TableHeader className="bg-muted">
-                <TableRow>
-                <TableHead className="text-left p-2">Nama</TableHead>
-                <TableHead className="text-left p-2">Harga Beli</TableHead>
-                <TableHead className="text-left p-2 w-24">Jumlah</TableHead>
-                <TableHead className="text-left p-2">Total Harga</TableHead>
-                <TableHead className="text-left p-2 w-10">Hapus</TableHead>
-                </TableRow>
-            </TableHeader>
+
+    <div className="border rounded-md max-h-[40vh] overflow-y-auto">
+    <Table className="w-full text-sm border table-fixed">
+    <TableHeader className="bg-muted sticky top-0 z-10">
+      <TableRow>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Nama
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Harga
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2 w-20">
+        Jumlah
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2">
+        Total
+      </TableHead>
+      <TableHead className="sticky top-0 bg-muted z-20 p-2 w-10" />
+    </TableRow>
+    </TableHeader>
 
             <TableBody>
                 {items.map((item) => (
@@ -389,10 +405,10 @@ export default function FormPembelian(){
             </Table>
         </div>
 
-        <div className="sticky bottom-0 bg-background border-t p-4">
+        <div className="bg-background border-t p-4">
 
             <div className="flex max-w-75">
-            <InputGroup>
+            <InputGroup className="max-w-40 mb-5">
                 <InputGroupInput
                 id="biayaKirim"
                 type="number"
@@ -425,55 +441,54 @@ export default function FormPembelian(){
             </div>
            <div className="text-right md:text-right space-y-2 mr-5 md:max-w-md md:ml-auto">
             
-            <div className="text-3xl font-bold mb-3">
+            <div className="text-xl font-bold mb-3">
                 Jumlah Total: {formatRupiah(totalsemua)}
             </div>
             </div>
              <Separator/>
             <div className="flex gap-3 mt-5">
-             
-            <Button
-                variant="destructive" 
-                className="flex-1 h-14 text-xl"
-                onClick={Reset}
-            >
-                Reset
-            </Button>
-            <AlertDialog open={open} onOpenChange={setOpen}>
-                <AlertDialogTrigger
-                render={
-                    <Button 
-                className="flex-1 h-14 text-xl" 
-                onClick={()=> setOpen(true)}
-                disabled={loadingBayar || items.length === 0}
-            >
-                {loadingBayar ? "Memproses..." : "Pesan Produk"}
-            </Button>
-                }
-                />
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Buat Transaksi Pembelian?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Apakah anda yakin ingin membuat transaksi pembelian ini?
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel variant="destructive">
-                            Batal
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                        onClick={handleBayar}
-                        disabled={loadingBayar || items.length === 0}
-                        className="bg-green-100 text-green-700 hover:bg-green-100"
-                        >
-                            Buat Pembelian
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+        <Button
+            variant="destructive" 
+            className="flex-1 h-14 text-xl"
+            onClick={Reset}
+        >
+            Reset
+        </Button>
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger
+            render={
+                <Button 
+            className="flex-1 h-14 text-xl" 
+            onClick={()=> setOpen(true)}
+            disabled={loadingBayar || items.length === 0}
+        >
+            {loadingBayar ? "Memproses..." : "Pesan Produk"}
+        </Button>
+            }
+            />
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        Buat Transaksi Pembelian?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Apakah anda yakin ingin membuat transaksi pembelian ini?
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel variant="destructive">
+                        Batal
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                    onClick={handleBayar}
+                    disabled={loadingBayar || items.length === 0}
+                    className="bg-green-100 text-green-700 hover:bg-green-100"
+                    >
+                        Buat Pembelian
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
             
             </div>
         </div>

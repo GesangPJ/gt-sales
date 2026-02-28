@@ -14,7 +14,6 @@ export default async function TabelBrand(){
         const respon = await fetch(`${baseUrl}${switchAPI}/data-brand`,{
             next:{
                 tags:["brand"],
-                revalidate: 86400,
             }
         })
 

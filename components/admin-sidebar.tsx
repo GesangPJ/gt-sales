@@ -37,6 +37,7 @@ import { IconLayoutRows,
     IconBuildingCommunity,
     IconUsers,
     IconBuildingWarehouse,
+    IconDatabaseDollar,
     IconMap 
 } from "@tabler/icons-react"
 import Link from "next/link"
@@ -150,6 +151,21 @@ const data = {
         {
           title: "Edit Kategori",
           url: "/kategori/edit-kategori",
+        },
+      ],
+    },
+    {
+      title:"Penjualan",
+      url:"#",
+      icon:(<IconDatabaseDollar/>),
+      items:[
+        {
+          title:"Daftar Penjualan",
+          url:"/penjualan/",
+        },
+        {
+          title:"Cari Penjualan",
+          url:"/penjualan/cari-penjualan",
         },
       ],
     },

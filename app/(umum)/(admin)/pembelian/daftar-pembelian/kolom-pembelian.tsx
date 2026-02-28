@@ -6,7 +6,6 @@ import { ColumnDef, Row } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown} from "lucide-react"
 import Link from "next/link"
-import { authClient } from "@/lib/auth-client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -70,7 +69,7 @@ export const kolom_pembelian = ({
       < Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="h-8 px-2"
       >
-        Nama Akun
+        Kode Pembelian
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
