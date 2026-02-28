@@ -38,7 +38,8 @@ import { IconLayoutRows,
     IconUsers,
     IconBuildingWarehouse,
     IconDatabaseDollar,
-    IconMap 
+    IconMap,
+    IconReportAnalytics,
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { AppInfo } from "./app-info"
@@ -46,11 +47,31 @@ import { TombolNav } from "./sidebar-tombol"
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+  navLaporan:[
+    {
+      title:"Laporan",
+      url:"#",
+      icon:(<IconReportAnalytics/>),
+      items:[
+        {
+          title:"Dashboard Laporan",
+          url:"/laporan"
+        },
+        {
+          title:"Laporan Penjualan",
+          url:"/laporan/laporan-penjualan",
+        },
+        {
+          title:"Laporan Pembelian",
+          url:"/laporan/laporan-pembelian",
+        },
+        {
+          title:"Ekspor Laporan",
+          url:"/laporan/cetak-laporan",
+        }
+      ],
+    },
+  ],
   navKasir:[
     {
         title: "Kasir",
@@ -74,7 +95,6 @@ const data = {
         },
 
         ],
-      
     },
     {
       title:"Distributor",
@@ -254,6 +274,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         </SidebarMenuItem>
         <NavMain items={data.navMain} />
         <NavMain items={data.navBrand}/>
+        <NavMain items={data.navLaporan}/>
       </SidebarContent>
       <SidebarFooter>
         {/* <NavUser user={user} /> */}
