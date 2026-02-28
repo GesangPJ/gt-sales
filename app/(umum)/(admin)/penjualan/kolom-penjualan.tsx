@@ -277,10 +277,6 @@ return(
     </AlertDialogFooter>
   </AlertDialogContent>
     </AlertDialog>
-
-<Button variant="outline">
-    <Link href={`/penjualan/edit-penjualan/${id}`}>Edit Penjualan</Link>
-</Button>
 </div>
     )}
     <Button variant="outline">
